@@ -1,0 +1,38 @@
+[
+    {
+        "id":"1",
+        "name":"Teeth Orthodontics",
+        "time":"8:00 AM - 9:00 AM",
+        "space":"10 SPACES AVAILABLE"
+    },
+    {
+        "id":"2",
+        "name":"Cosmetic Dentistry",
+        "time":"10:00 AM - 11:30 AM",
+        "space":"14 SPACES AVAILABLE"
+    },
+    {
+        "id":"3",
+        "name":"Teeth Cleaning",
+        "time":"12:00 PM - 1:00 PM",
+        "space":"20 SPACES AVAILABLE"
+    },
+    {
+        "id":"4",
+        "name":"Cavity Protection",
+        "time":"5:00 PM - 6:00 PM",
+        "space":"8 SPACES AVAILABLE"
+    },
+    {
+        "id":"5",
+        "name":"Checkup",
+        "time":"6:30 PM - 7:30 PM",
+        "space":"5 SPACES AVAILABLE"
+    },
+    {
+        "id":"6",
+        "name":"Treatment and Information",
+        "time":"8:00 PM - 9:00 PM",
+        "space":"50 SPACES AVAILABLE"
+    }
+]
