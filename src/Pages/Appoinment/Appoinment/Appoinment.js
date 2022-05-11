@@ -12,7 +12,7 @@ const Appoinment = () => {
             <Nav/>
             <AppoinmentHeader date ={date} setDate={setDate}/>
             <AppoinmentAvailable date ={date}/>
-            <Bookings></Bookings>
+            {/* <Bookings></Bookings> */}
         </div>
     );
 };
