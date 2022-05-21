@@ -35,6 +35,7 @@ const Nav = () => {
           </Typography>
           <Link to ="/home"><Button sx={{color:"white"}}>Home</Button></Link>
           <Link to ="/appoinment"><Button sx= {{color:"white"}}>Appointment</Button></Link>
+          <Link to= "/login"><Button sx= {{color:"white"}}>Log In</Button></Link>
           
         </Toolbar>
       </AppBar>
