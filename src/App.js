@@ -3,10 +3,12 @@ import "./App.css";
 import { render } from "react-dom";
 import Home from "./Pages/Home/Home/Home";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Appoinment from "./Pages/Appoinment/Appoinment/Appoinment";
+
 import Login from "./Pages/Login/Login/Login";
 import Register from "./Pages/Login/Register/Register";
 import AuthProvider from "./Context/AuthProvider/AuthProvider";
+import PrivateRoute from "./Pages/Login/Login/PrivateRoute";
+import Appoinment from "./Pages/Appoinment/Appoinment/Appoinment";
 
 function App() {
   return <div className="App">
@@ -15,7 +17,8 @@ function App() {
         <Routes>
             <Route path="/" element={<Home/>}/>
             <Route path="/home" element={<Home/>}/>
-            <Route path="/appoinment" element={<Appoinment/>}/>
+            <Route path="/appointment" element={<PrivateRoute><Appoinment/></PrivateRoute>}/>
+            {/* <Route path="/appointment" element={<PrivateRoute><Appoinment/> </PrivateRoute>}/> */}
             <Route path= "/login" element={<Login/>}/>
             <Route path="/register" element={<Register/>}/>
         </Routes>

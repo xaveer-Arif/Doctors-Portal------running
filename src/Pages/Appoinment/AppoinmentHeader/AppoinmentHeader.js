@@ -21,7 +21,7 @@ const AppoinmentHeader = ({date, setDate}) => {
     
         <Grid container spacing={2}>
           <Grid item xs={12} md ={6}>
-            <h1>Appoinment</h1>
+            <h1>Appointment</h1>
             <Calender date={date} setDate={setDate}></Calender>
           </Grid>
           <Grid item xs={12} md ={6} >

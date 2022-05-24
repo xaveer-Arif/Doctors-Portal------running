@@ -11,11 +11,14 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
+import useAuth from "../../../Hooks/useAuth";
+
 
 
 
 const Nav = () => {
+  const {user, logOut} = useAuth()
    
     return (
       <Box sx={{ flexGrow: 1 }}>
@@ -34,8 +37,16 @@ const Nav = () => {
             News
           </Typography>
           <Link to ="/home"><Button sx={{color:"white"}}>Home</Button></Link>
-          <Link to ="/appoinment"><Button sx= {{color:"white"}}>Appointment</Button></Link>
-          <Link to= "/login"><Button sx= {{color:"white"}}>Log In</Button></Link>
+          <Link to ="/appointment"><Button sx= {{color:"white"}}>Appointment</Button></Link>
+          {
+            user?.email ?
+              <Button onClick={logOut} style={{color: "white"}}>LogOut</Button>
+              :
+              <NavLink to = "/login">
+                <Button style={{color: "white"}}>logIn</Button>
+              </NavLink>
+          }
+          {/* <Link to= "/login"><Button sx= {{color:"white"}}>Log In</Button></Link> */}
           
         </Toolbar>
       </AppBar>

@@ -6,6 +6,8 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
+  GoogleAuthProvider,
+  signInWithPopup,
 } from "firebase/auth";
 
 // initialize firebase
@@ -13,57 +15,92 @@ initializeFirebase();
 
 const useFirebase = () => {
   const [user, setUser] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+  const [authError, setAuthError] = useState("");
 
   const auth = getAuth();
+  const googleProvider = new GoogleAuthProvider();
 
   // registration
   const register = (email, password) => {
+    setIsLoading(true);
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        const user = userCredential.user;
+        setAuthError("");
       })
       .catch((error) => {
         const errorCode = error.code;
-        const errorMessage = error.message;
-      });
+        setAuthError(error.message);
+      })
+      .finally(() => setIsLoading(false));
   };
 
   // sign-In-With-email-and-password
-  const loginUser = (email, password) => {
+  const loginUser = (email, password, location, navigate) => {
+    setIsLoading(true);
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        const user = userCredential.user;
+        const destination =location.state?.from?.pathname || "/"
+        navigate(destination);
+        setAuthError("");
+        setUser(userCredential.user);
+        // const user = userCredential.user;
       })
       .catch((error) => {
         const errorCode = error.code;
-        const errorMessage = error.message;
-      });
+       setAuthError( error.message);
+      })
+      .finally(() => setIsLoading(false));
   };
 
-  //signOut
-  const logOut = () => {
-    signOut(auth)
-      .then(() => {})
-      .catch((error) => {});
+  //sign is With google
+  const signInWithGoogle = (location, navigate) => {
+    setIsLoading(true)
+    signInWithPopup(auth, googleProvider)
+      .then((result) => {
+        const destination =location.state?.from?.pathname || "/"
+        navigate(destination  , { replace: true })
+        const user = result.user;
+        // ...
+      })
+      .catch((error) => {
+        setAuthError( error.message);
+      })
+      .finally( () => setIsLoading(false))
+
   };
 
   // onAuthStateChanged
   useEffect(() => {
+    setIsLoading(true)
     const unSubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setUser(user);
       } else {
         setUser({});
       }
+      setIsLoading(false);
     });
     return () => unSubscribe;
   }, []);
+
+  //signOut
+  const logOut = () => {
+    setIsLoading(true);
+    signOut(auth)
+      .then(() => {})
+      .catch((error) => {})
+      .finally(() => setIsLoading(false));
+  };
 
   return {
     user,
     register,
     logOut,
-    loginUser
+    loginUser,
+    isLoading,
+    authError,
+    signInWithGoogle
   };
 };
 
