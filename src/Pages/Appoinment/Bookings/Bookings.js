@@ -4,10 +4,11 @@ import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import ModelBooking from "./ModalBooking/ModalBooking"
 
-const Bookings = ({ schedule , date}) => {
+const Bookings = ({ schedule , date, setBookingSucessAlert}) => {
   const [modelOpen, setModelOpen] = React.useState(false);
   const handleModelOpen = () => setModelOpen(true);
   const handleModelClose = () => setModelOpen(false);
+
   
 
   return (
@@ -39,6 +40,7 @@ const Bookings = ({ schedule , date}) => {
         schedule ={schedule}
         modelOpen ={modelOpen}
         date = {date}
+        setBookingSucessAlert = {setBookingSucessAlert}
         handleModelClose = {handleModelClose}
       ></ModelBooking>
 

@@ -6,8 +6,9 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
-  GoogleAuthProvider,
+  GoogleAuthProvider ,
   signInWithPopup,
+  updateProfile 
 } from "firebase/auth";
 
 // initialize firebase
@@ -22,11 +23,19 @@ const useFirebase = () => {
   const googleProvider = new GoogleAuthProvider();
 
   // registration
-  const register = (email, password) => {
+  const register = (email, password, name, navigate) => {
     setIsLoading(true);
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
+        const newUser = {email, displayName:name}
+        setUser(newUser)
+        updateProfile(auth.currentUser, {
+          displayName: name
+        }).then(() => {
+        }).catch((error) => {
+        });
         setAuthError("");
+        navigate("/")
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -59,9 +68,8 @@ const useFirebase = () => {
     signInWithPopup(auth, googleProvider)
       .then((result) => {
         const destination =location.state?.from?.pathname || "/"
-        navigate(destination  , { replace: true })
-        const user = result.user;
-        // ...
+        navigate(destination);
+        setAuthError("")
       })
       .catch((error) => {
         setAuthError( error.message);

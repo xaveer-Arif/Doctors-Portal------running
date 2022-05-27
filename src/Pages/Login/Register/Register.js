@@ -1,6 +1,6 @@
 import { Button, Grid, TextField, Typography, CircularProgress, Alert, AlertTitle } from "@mui/material";
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import useAuth from "../../../Hooks/useAuth";
 import login from "../../../images/login.png";
 
@@ -8,23 +8,25 @@ const Register = () => {
     const [loginData, setLoginData] = useState({});
     const [error, setError] = useState("");
     const {authError, user, register, isLoading} = useAuth()
+    const navigate = useNavigate()
 
-  const handleOnChange = (e) => {
+  const handleOnBlur = (e) => {
     const value = e.target.value;
     const filed = e.target.name;
     const info = { ...loginData };
     info[filed] = value;
+    console.log(info)
     setLoginData(info);
   };
 
-  console.log(loginData.password1)
+  // console.log(loginData.password1)
   const handleLogin = (e) => {
-    if(loginData.password1 !== loginData.password2){
-      alert("password doesn`t match")
-      return
-    }
-    register(loginData.email , loginData.password1)
     e.preventDefault();
+    if(loginData.password1 !== loginData.password2){
+      return setError("password doesn`t match")
+    }
+    register(loginData.email , loginData.password1, loginData.name, navigate)
+    setError("")
     };
     return (
         <div>
@@ -40,9 +42,19 @@ const Register = () => {
                 sx={{ width: "75%", m: 1, mt:4 }}
                 id="standard-basic"
                 variant="standard"
+                label="Username"
+                name="name"
+                onBlur={handleOnBlur}
+                // type="email"
+            ></TextField>
+            <TextField
+                // required
+                sx={{ width: "75%", m: 2 }}
+                id="standard-basic"
+                variant="standard"
                 label="Email"
                 name="email"
-                onChange={handleOnChange}
+                onBlur={handleOnBlur}
                 // type="email"
             ></TextField>
 
@@ -54,7 +66,7 @@ const Register = () => {
                 label="Password"
                 type="password"
                 name="password1"
-                onChange={handleOnChange}
+                onBlur={handleOnBlur}
             ></TextField>
 
             <TextField
@@ -65,9 +77,9 @@ const Register = () => {
                 label="Confirm password"
                 type="password"
                 name="password2"
-                onChange={handleOnChange}
+                onBlur={handleOnBlur}
             ></TextField>
-          
+          <h4>{error}</h4>
           <Button sx={{ width: "75%", m: 3 }} type="submit" variant="contained">
             Login
           </Button>
@@ -78,11 +90,11 @@ const Register = () => {
             to="/login">
               Already Registered? Please Login
           </NavLink>
-          {
+          {/* {
             user?.email && <Alert severity="success">
                               <AlertTitle>Sucessfully Login!</AlertTitle>
                             </Alert>
-          }
+          } */}
           {
             authError && <Alert severity="error">
                               <AlertTitle>{authError}</AlertTitle>

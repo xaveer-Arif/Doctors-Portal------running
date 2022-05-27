@@ -1,9 +1,10 @@
-import { Container, Grid, Typography } from "@mui/material";
+import { Alert, Container, Grid, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import Bookings from "../Bookings/Bookings";
 
 const AppoinmentAvailable = ({ date }) => {
   const [schedules, setSchedules] = useState([]);
+  const [bookingSucessAlert, setBookingSucessAlert] = useState(false)
 
   useEffect(() => {
     fetch("./booking.json")
@@ -21,12 +22,14 @@ const AppoinmentAvailable = ({ date }) => {
       >
         Available Appoinment {date.toDateString()}
       </Typography>
+      {bookingSucessAlert && <Alert severity="success">Booking Successfull!</Alert> }
 
       <Grid container spacing={2}>
         {schedules?.map((schedule) => (
           <Bookings 
             key={schedule.id} 
             date = {date}
+            setBookingSucessAlert = {setBookingSucessAlert}
             schedule={schedule}></Bookings>
         ))}
       </Grid>

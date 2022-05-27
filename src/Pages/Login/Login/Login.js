@@ -10,7 +10,7 @@ const Login = () => {
   const location = useLocation();
   const navigate =  useNavigate()
   
-  const handleOnChange = (e) => {
+  const handleOnBlur = (e) => {
     const value = e.target.value;
     const filed = e.target.name;
     const info = { ...loginData };
@@ -26,9 +26,9 @@ console.log(location)
     alert();
   };
 
-  const googleHandler = (location, navigate) => {
+  const googleHandler = () => {
     signInWithGoogle(location, navigate)
-    console.log('google')
+    // console.log('google')
   }
   
   return (
@@ -44,7 +44,7 @@ console.log(location)
             variant="standard"
             label="Email"
             name="email"
-            onBlur={handleOnChange}
+            onBlur={handleOnBlur}
             // type="email"
           ></TextField>
           <TextField
@@ -55,7 +55,7 @@ console.log(location)
             label="Password"
             type="password"
             name="password"
-            onBlur={handleOnChange}
+            onBlur={handleOnBlur}
           ></TextField>
           <Button sx={{ width: "75%", m: 3 }} type="submit" variant="contained">
             Login

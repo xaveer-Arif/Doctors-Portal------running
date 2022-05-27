@@ -17,7 +17,8 @@ const Calender = ({date, setDate }) => {
         onChange={(newValue) => {
           setDate(newValue);
         }}
-        renderInput={(params) => <TextField size="small" {...params} />}
+        renderInput={(params) => <TextField size="small"{...params} 
+         />}
       />
     </LocalizationProvider>
   );

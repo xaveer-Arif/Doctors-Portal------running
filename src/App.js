@@ -9,6 +9,8 @@ import Register from "./Pages/Login/Register/Register";
 import AuthProvider from "./Context/AuthProvider/AuthProvider";
 import PrivateRoute from "./Pages/Login/Login/PrivateRoute";
 import Appoinment from "./Pages/Appoinment/Appoinment/Appoinment";
+import Dashboard from "./Pages/Dashboard/Dashboard/Dashboard";
+
 
 function App() {
   return <div className="App">
@@ -17,8 +19,10 @@ function App() {
         <Routes>
             <Route path="/" element={<Home/>}/>
             <Route path="/home" element={<Home/>}/>
-            <Route path="/appointment" element={<PrivateRoute><Appoinment/></PrivateRoute>}/>
-            {/* <Route path="/appointment" element={<PrivateRoute><Appoinment/> </PrivateRoute>}/> */}
+            <Route path="/appointment" 
+                element={<PrivateRoute><Appoinment/></   PrivateRoute>}/>
+            <Route path="/dashboard" 
+                element={<PrivateRoute><Dashboard/></PrivateRoute>}> </Route>
             <Route path= "/login" element={<Login/>}/>
             <Route path="/register" element={<Register/>}/>
         </Routes>
