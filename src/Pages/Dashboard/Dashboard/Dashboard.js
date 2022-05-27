@@ -19,13 +19,15 @@ import Typography from "@mui/material/Typography";
 import { Grid } from "@mui/material";
 import Calender from "../../Shared/Calender/Calender";
 import AppointmentList from "../AppointmentList/AppointmentList";
+import { NavLink } from "react-router-dom";
+import { Home } from "@mui/icons-material";
 
 const drawerWidth = 180;
 
 function Dashboard(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [date, setDate] = React.useState(new Date())
+  const [date, setDate] = React.useState(new Date());
   // console.log(date)
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -35,6 +37,24 @@ function Dashboard(props) {
     <div>
       <Toolbar />
       <Divider />
+
+      <NavLink
+        to="/home"
+        style={{ color: "inherit", textDecoration: "none", textAlign: "right" }}
+      >
+        <List>
+          <ListItem disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                <Home />
+              </ListItemIcon>
+              <ListItemText primary="home" />
+            </ListItemButton>
+          </ListItem>
+        </List>
+      </NavLink>
+
+      {/* <NavLink to='/home' style={{color:"inherit", textDecoration:"none", textAlign:"right"}}> Home</NavLink> */}
       <List>
         {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
           <ListItem key={text} disablePadding>
@@ -128,18 +148,11 @@ function Dashboard(props) {
         <Typography paragraph>
           <Grid container spacing={2}>
             <Grid item xs={12} md={5}>
-              <Calender
-              key={date}
-              date = {date}
-              setDate={setDate}
-              />
+              <Calender key={date} date={date} setDate={setDate} />
             </Grid>
-            <Grid item xs={12} md={7} >
-              <AppointmentList
-              date={date}
-              />
+            <Grid item xs={12} md={7}>
+              <AppointmentList date={date} />
             </Grid>
-          
           </Grid>
         </Typography>
       </Box>
