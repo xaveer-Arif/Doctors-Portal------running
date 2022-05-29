@@ -23,12 +23,13 @@ const useFirebase = () => {
   const googleProvider = new GoogleAuthProvider();
 
   // registration
-  const register = (email, password, name, navigate) => {
+  const register = (email, password, name, phone,  navigate) => {
     setIsLoading(true);
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const newUser = {email, displayName:name}
         setUser(newUser)
+        saveUser(email, name, phone, "POST")
         updateProfile(auth.currentUser, {
           displayName: name
         }).then(() => {
@@ -67,6 +68,9 @@ const useFirebase = () => {
     setIsLoading(true)
     signInWithPopup(auth, googleProvider)
       .then((result) => {
+        const user = result.user
+        saveUser(user.email, user.displayName, user.phoneNumber, "PUT")
+        // console.log(user)
         const destination =location.state?.from?.pathname || "/"
         navigate(destination);
         setAuthError("")
@@ -100,6 +104,20 @@ const useFirebase = () => {
       .catch((error) => {})
       .finally(() => setIsLoading(false));
   };
+
+  // save user information to the database.
+  const saveUser = (email,  displayName, phone, method) => {
+      const userInfo = {email, displayName, phone}
+      fetch("http://localhost:5000/users", {
+          method: method,
+          headers:{
+            "content-type":"application/json "
+          },
+          body:JSON.stringify(userInfo)
+      })
+      .then(res => res.json())
+      .then(data => console.log(data))
+  }
 
   return {
     user,

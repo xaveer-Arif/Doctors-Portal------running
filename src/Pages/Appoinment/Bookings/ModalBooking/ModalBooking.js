@@ -105,6 +105,7 @@ const ModalBooking = ({
             />
 
             <TextField
+              disabled
               sx={{ width: "100%", mb: 1 }}
               id="outlined-size-normal"
               name="email"

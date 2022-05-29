@@ -15,10 +15,10 @@ const Login = () => {
     const filed = e.target.name;
     const info = { ...loginData };
     info[filed] = value;
-    console.log(info)
+    // console.log(info)
     setLoginData(info);
   };
-console.log(location)
+// console.log(location)
   const handleLogin = (e) => {
     e.preventDefault();
     loginUser(loginData.email, loginData.password, location, navigate)

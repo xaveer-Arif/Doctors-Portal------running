@@ -25,7 +25,7 @@ const Register = () => {
     if(loginData.password1 !== loginData.password2){
       return setError("password doesn`t match")
     }
-    register(loginData.email , loginData.password1, loginData.name, navigate)
+    register(loginData.email , loginData.password1, loginData.name, loginData.phone, navigate)
     setError("")
     };
     return (
@@ -56,6 +56,17 @@ const Register = () => {
                 name="email"
                 onBlur={handleOnBlur}
                 // type="email"
+            ></TextField>
+
+            <TextField
+                // required
+                sx={{ width: "75%", m: 2 }}
+                id="standard-basic"
+                variant="standard"
+                label="Phone"
+                name="phone"
+                onBlur={handleOnBlur}
+                type="number"
             ></TextField>
 
             <TextField
