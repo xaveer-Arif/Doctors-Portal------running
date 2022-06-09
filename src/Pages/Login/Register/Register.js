@@ -26,6 +26,9 @@ const Register = () => {
       return setError("password doesn`t match")
     }
     register(loginData.email , loginData.password1, loginData.name, loginData.phone, navigate)
+
+
+    
     setError("")
     };
     return (

@@ -16,18 +16,26 @@ import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { Grid } from "@mui/material";
-import Calender from "../../Shared/Calender/Calender";
-import AppointmentList from "../AppointmentList/AppointmentList";
+import { Button, Grid } from "@mui/material";
+// import Calender from "../../Shared/Calender/Calender";
+// import AppointmentList from "../AppointmentList/AppointmentList";
 import { NavLink } from "react-router-dom";
 import { Home } from "@mui/icons-material";
+// import MakeAdmin from "../MakeAdmin/MakeAdmin"
+import {
+  Outlet,
+  Link
+} from "react-router-dom";
+import useAuth from "../../../Hooks/useAuth";
+// import DashboardHome from "../DashboardHome/DashboardHome";
 
 const drawerWidth = 180;
 
 function Dashboard(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [date, setDate] = React.useState(new Date());
+  const {isAdmin} = useAuth()
+  // const [date, setDate] = React.useState(new Date());
   // console.log(date)
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -37,10 +45,10 @@ function Dashboard(props) {
     <div>
       <Toolbar />
       <Divider />
-
+{/* dashboard home section */}
       <NavLink
         to="/home"
-        style={{ color: "inherit", textDecoration: "none", textAlign: "right" }}
+        style={{paddingTop:"0px", paddingButtom:"0px", color: "inherit", textDecoration: "none", textAlign: "right" }}
       >
         <List>
           <ListItem disablePadding>
@@ -53,7 +61,59 @@ function Dashboard(props) {
           </ListItem>
         </List>
       </NavLink>
+      {/*----------------------*/}
+      {/* dashboard section */}
+      <Link 
+        to= {"/dashboard"}  
+        style={{padding:0, color: "inherit", textDecoration: "none", textAlign: "right" }}>
+        <List>
+          <ListItem disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                <Home />
+              </ListItemIcon>
+              <ListItemText primary="Dashboard" />
+            </ListItemButton>
+          </ListItem>
+        </List>
+        </Link>
+      {/* <Link to= {"/dashboard"}><Button>Dashboard</Button></Link> */}
 
+      {
+        isAdmin && <Box>
+          {/* dashboard make Admin */}
+          <Link 
+              to= {"/dashboard/makeAdmin"} 
+              style={{padding:0, color: "inherit", textDecoration: "none", textAlign: "right" }}>
+        <List>
+          <ListItem disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                <Home />
+              </ListItemIcon>
+              <ListItemText primary=" Make Admin  " />
+            </ListItemButton>
+          </ListItem>
+        </List>
+        </Link>
+
+        {/* dashboard add doctor */}
+        <Link 
+            to={"/dashboard/addDoctor"}
+            style={{padding:0, color: "inherit", textDecoration: "none", textAlign: "right" }}>
+        <List>
+          <ListItem disablePadding>
+            <ListItemButton>
+            <ListItemIcon>
+              <Home/>
+            </ListItemIcon>
+            <ListItemText primary="Add Doctor"/>
+             </ListItemButton>
+          </ListItem>
+        </List>
+        </Link>
+        </Box>
+      }
       {/* <NavLink to='/home' style={{color:"inherit", textDecoration:"none", textAlign:"right"}}> Home</NavLink> */}
       <List>
         {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
@@ -145,7 +205,7 @@ function Dashboard(props) {
         }}
       >
         <Toolbar />
-        <Typography paragraph>
+        {/* <Typography paragraph>
           <Grid container spacing={2}>
             <Grid item xs={12} md={5}>
               <Calender key={date} date={date} setDate={setDate} />
@@ -154,7 +214,9 @@ function Dashboard(props) {
               <AppointmentList date={date} />
             </Grid>
           </Grid>
-        </Typography>
+        </Typography> */}
+      <Outlet/>
+
       </Box>
     </Box>
   );
