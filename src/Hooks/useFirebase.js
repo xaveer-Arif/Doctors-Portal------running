@@ -6,9 +6,10 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
-  GoogleAuthProvider ,
+  GoogleAuthProvider,
   signInWithPopup,
-  updateProfile 
+  updateProfile,
+  getIdToken,
 } from "firebase/auth";
 
 // initialize firebase
@@ -18,26 +19,27 @@ const useFirebase = () => {
   const [user, setUser] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [authError, setAuthError] = useState("");
-  const [isAdmin, setIsAdmin] = useState(false)
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [token, setToken] = useState("")
 
   const auth = getAuth();
   const googleProvider = new GoogleAuthProvider();
 
   // registration
-  const register = (email, password, name, phone,  navigate) => {
+  const register = (email, password, name, phone, navigate) => {
     setIsLoading(true);
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        const newUser = {email, displayName:name}
-        setUser(newUser)
-        saveUser(email, name, phone, "POST")
+        const newUser = { email, displayName: name };
+        setUser(newUser);
+        saveUser(email, name, phone, "POST");
         updateProfile(auth.currentUser, {
-          displayName: name
-        }).then(() => {
-        }).catch((error) => {
-        });
+          displayName: name,
+        })
+          .then(() => {})
+          .catch((error) => {});
         setAuthError("");
-        navigate("/")
+        navigate("/");
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -51,7 +53,7 @@ const useFirebase = () => {
     setIsLoading(true);
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        const destination =location.state?.from?.pathname || "/"
+        const destination = location.state?.from?.pathname || "/";
         navigate(destination);
         setAuthError("");
         setUser(userCredential.user);
@@ -59,36 +61,39 @@ const useFirebase = () => {
       })
       .catch((error) => {
         const errorCode = error.code;
-       setAuthError( error.message);
+        setAuthError(error.message);
       })
       .finally(() => setIsLoading(false));
   };
 
   //sign is With google
   const signInWithGoogle = (location, navigate) => {
-    setIsLoading(true)
+    setIsLoading(true);
     signInWithPopup(auth, googleProvider)
       .then((result) => {
-        const user = result.user
-        saveUser(user.email, user.displayName, user.phoneNumber, "PUT")
+        const user = result.user;
+        saveUser(user.email, user.displayName, user.phoneNumber, "PUT");
         // console.log(user)
-        const destination =location.state?.from?.pathname || "/"
+        const destination = location.state?.from?.pathname || "/";
         navigate(destination);
-        setAuthError("")
+        setAuthError("");
       })
       .catch((error) => {
-        setAuthError( error.message);
+        setAuthError(error.message);
       })
-      .finally( () => setIsLoading(false))
-
+      .finally(() => setIsLoading(false));
   };
 
   // onAuthStateChanged
   useEffect(() => {
-    setIsLoading(true)
+    setIsLoading(true);
     const unSubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setUser(user);
+        getIdToken(user)
+        .then(idToken =>{
+          setToken(idToken)
+        })
       } else {
         setUser({});
       }
@@ -98,11 +103,11 @@ const useFirebase = () => {
   }, []);
 
   // admin
-  useEffect( () => {
-    fetch(`http://localhost:5000/users/${user.email}`)
-    .then(res => res.json())
-    .then(data => setIsAdmin(data.admin))
-  },[user.email])
+  useEffect(() => {
+    fetch(`http://localhost:5000/users/${user?.email}`)
+      .then((res) => res.json())
+      .then(data => setIsAdmin(data.admin));
+  }, [user.email]);
 
   //signOut
   const logOut = () => {
@@ -114,28 +119,29 @@ const useFirebase = () => {
   };
 
   // save user information to the database.
-  const saveUser = (email,  displayName, phone, method) => {
-      const userInfo = {email, displayName, phone}
-      fetch("http://localhost:5000/users", {
-          method: method,
-          headers:{
-            "content-type":"application/json "
-          },
-          body:JSON.stringify(userInfo)
-      })
-      .then(res => res.json())
-      .then(data => console.log(data))
-  }
+  const saveUser = (email, displayName, phone, method) => {
+    const userInfo = { email, displayName, phone };
+    fetch("http://localhost:5000/users", {
+      method: method,
+      headers: {
+        "content-type": "application/json ",
+      },
+      body: JSON.stringify(userInfo),
+    })
+      .then((res) => res.json())
+      .then((data) => console.log(data));
+  };
 
   return {
     user,
     isAdmin,
+    token,
     register,
     logOut,
     loginUser,
     isLoading,
     authError,
-    signInWithGoogle
+    signInWithGoogle,
   };
 };
 

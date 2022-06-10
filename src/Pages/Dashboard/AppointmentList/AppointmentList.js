@@ -10,14 +10,18 @@ import Paper from '@mui/material/Paper';
 import { Grid } from '@mui/material';
 
 const AppointmentList = ({date}) => {
-    const {user} = useAuth() 
+    const {user, token} = useAuth() 
     const [appointments, setAppointments] = useState([])
     console.log(user.email)
     const dated= date.toLocaleDateString()
     
     useEffect(() => {
       const url=`http://localhost:5000/appointment?email=${user.email}&date=${(dated)}`
-      fetch(url)
+      fetch(url,{
+        headers:{
+          "authorization": `Bearer ${token}`
+        }
+      })
       .then(res => res.json())
       .then(data => setAppointments(data))
     },[date])
